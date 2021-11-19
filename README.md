@@ -1,2 +1,2 @@
-# ScalableInference
-Scalable Algorithms for Statistical Inference from Big Data
+# politicization2021
+The politicization of medical topics on social media
