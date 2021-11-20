@@ -50,7 +50,8 @@ layout: true
 2. Learn the Divide and Conquer paradigm for scalable statistics
 3. Learn how bootstrapping can be scalable
 
-**Lecture resources:** https://github.com/dgarcia-eu/ScalableInference
+**Lecture resources:**
+https://dgarcia.eu/ScalableInference
 ---
 # When data goes big
 
@@ -121,6 +122,43 @@ for (mn in seq(0,1, by=0.05)) # We repeat the task for means in this range
     mnmeans <- c(mnmeans, mean(submeans)) # vector with the mean across machines
   }
 }
+df <- data.frame(meanests, mnmeans, truemeans)
+
+ggplot(df, aes(x=meanests, y=mnmeans)) + geom_point() + theme_bw() + 
+  ylab("Distributed mean") + xlab("Whole sample estimate") + theme( text = element_text(size = 24))
+
+```
+]
+
+---
+# Averaging example: the case of the mean
+.pull-left[![:scale 95%](AveragingMeans.svg)]
+.pull-right[
+```{r, echo=T, eval=F, message=F, fig.width=7, fig.height=6, fig.align='center', dev='svg'}
+N <- 400 # total sample size
+M <- 40  # number of machines, each one will have N/M points
+truemeans <- NULL;  mnmeans <- NULL; meanests <- NULL
+rep <- 20
+for (mn in seq(0,1, by=0.05)) # We repeat the task for means in this range
+{
+  for (r in seq(1,rep))
+  {
+    x <- rnorm(mean=mn, n=N)  # total dataset
+    meanest <- mean(x)        # total dataset mean estimate
+    i <- rep(seq(1,M), N/M)   # index of the machine where a point resides
+    submeans <- NULL
+    for (j in seq(1, M))      # loop to simulate the map step of each machine
+    {
+      submeans[j] <- mean(x[i==j])
+    }
+    
+    truemeans <- c(truemeans,mn)
+    meanests <- c(meanests, meanest)  # vector with means based on the whole sample
+    mnmeans <- c(mnmeans, mean(submeans)) # vector with the mean across machines
+  }
+}
+
+
 df <- data.frame(meanests, mnmeans, truemeans)
 
 ggplot(df, aes(x=meanests, y=mnmeans)) + geom_point() + theme_bw() + 
