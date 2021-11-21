@@ -303,7 +303,7 @@ for (i in seq(1,Nrep))
 CI <- quantile(bootcors, probs = c(0.025, 0.975))
 df <- data.frame(bootcors)
 ggplot(df, aes(bootcors)) + geom_histogram(fill="gray", color="black") + geom_vline(xintercept=CI, color="red") + theme_bw() + 
-  xlab(TeX("$\\widehat{\\theta_i}$"))+ annotate(geom="text", x=CI[1]-0.1, y=Nrep/10, label="95% Confidence Interval (CI)", color="red", size=6) + theme( text = element_text(size = 24), plot.title = element_text(hjust = 0.5))  + ggtitle("Bootstrap estimates")
+  xlab(TeX("$\\widehat{\\theta_i}$"))+ annotate(geom="text", x=CI[1]-0.05, y=Nrep/10, label="95% Confidence Interval (CI)", color="red", size=6) + theme( text = element_text(size = 24), plot.title = element_text(hjust = 0.5))  + ggtitle("Bootstrap estimates")
 ```
 - Option 2: smaller samples m <n 
   - Overestimates CI width! 
